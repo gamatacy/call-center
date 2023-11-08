@@ -1,0 +1,8 @@
+call_center
+CMakeCache.txt
+CMakePresets.json
+CMakeUserPresets.json
+/CMakeFiles
+/build
+*.cmake
+Makefile
