@@ -2,10 +2,10 @@
 install_conan:
 	conan install . --output-folder=build --build=missing
 
-build_toolchain:
+build_toolchain: install_conan
 	cmake . -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
 
-build: install_conan build_toolchain
+build:
 	cmake --build .
 
 soft_clean:
@@ -18,4 +18,5 @@ clean: soft_clean
 	rm -rf build
 	rm -rf *.cmake
 	rm -rf Makefile
+	rm -rf cmake-build-debug
 
