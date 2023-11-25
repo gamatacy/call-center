@@ -17,3 +17,11 @@ Config::Config() {
 uint32_t Config::getQuerySize() {
     return this->querySize;
 }
+
+std::time_t Config::getResponseMin(){
+    return this->responseMin;
+}
+
+std::time_t Config::getResponseMax(){
+    return this->responseMax;
+}

@@ -11,6 +11,10 @@ add_executable(call_center main.cpp
         include/httpServer.h
         include/defs.h
         include/status.h
+        src/callCenterService.cpp
+        include/callCenterService.h
+        src/operatorMock.cpp
+        include/operatorMock.h
 )
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
