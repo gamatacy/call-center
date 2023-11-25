@@ -8,3 +8,4 @@ CMakeUserPresets.json
 Makefile
 ./idea
 cmake-build-debug
+./.vscode
