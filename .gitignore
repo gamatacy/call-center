@@ -6,6 +6,6 @@ CMakeUserPresets.json
 /build
 *.cmake
 Makefile
-./.idea
+.idea
 cmake-build-debug
-./.vscode
+.vscode
