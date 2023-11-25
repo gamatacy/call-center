@@ -11,7 +11,6 @@
 #include "defs.h"
 #include "operatorMock.h"
 #include "config.h"
-#include "../include/timeoutHandler.h"
 
 
 class CallCenterService {
