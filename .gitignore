@@ -7,4 +7,4 @@ CMakeUserPresets.json
 *.cmake
 Makefile
 ./idea
-cmake-build-debug2
+cmake-build-debug
