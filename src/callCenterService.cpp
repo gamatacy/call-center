@@ -4,15 +4,21 @@
 
 #include "../include/callCenterService.h"
 
-CallCenterService::CallCenterService() {}
+using namespace std::chrono_literals;
 
-int CallCenterService::handleCall(Call& call){
+CallCenterService::CallCenterService() {
 
-    if (this->hasFreeOperators() == 1 && this->operatorsList.size() < 3){
-        call.callStatus == CallStatus::PROCESSING;
-        return 0;
+    for (int i = 0; i < 2; ++i) {
+        this->operatorsList.push_back(new OperatorMock());
     }
-    else if (this->calls.size() == Config::getInstance()->getQuerySize()){
+
+}
+
+CallCenterService::~CallCenterService() {}
+
+int CallCenterService::handleCall(Call &call) {
+
+    if (this->calls.size() == Config::getInstance()->getQuerySize()) {
         return -1;
     }
 
@@ -21,23 +27,74 @@ int CallCenterService::handleCall(Call& call){
 
 }
 
-int CallCenterService::hasFreeOperators(){
-    for (OperatorMock operatorMock : this->operatorsList){
-        if (operatorMock.getStatus() == OperatorStatus::FREE){
-            return 1;
+
+void CallCenterService::handleCallsTimeout() {
+
+    while (true) {
+
+        for (auto call: this->calls) {
+
+            if (call.rejectTime <= std::time(nullptr)
+                && call.callStatus == CallStatus::EXPIRED) {
+                this->calls.remove(call);
+                CDR::saveCDR(call);
+            }
+
         }
+
+        std::this_thread::sleep_for(2000ms);
+
     }
-    return 0;
+
 }
 
-void CallCenterService::handleCallsTimeout(){
-        
-    while (true){
-        for (auto call : this->calls){
-            if ( call.rejectTime <= std::time(nullptr)
-             && call.callStatus == CallStatus::EXPIRED)
-                this->calls.remove(call);
+void CallCenterService::handleOperators() {
+
+    while (true) {
+
+        for (auto _operator: this->operatorsList) {
+
+            if (_operator->getWillBeFreeTime() <= std::time(nullptr)
+                && _operator->getStatus() == OperatorStatus::BUSY) {
+
+                _operator->setStatus(OperatorStatus::FREE);
+                BOOST_LOG_TRIVIAL(info) << "Operator processed callID: " << _operator->getCurrentCall()->callId.id;
+
+                Call call = *_operator->getCurrentCall();
+
+                call.callStatus = CallStatus::PROCESSED;
+                call.operatorResponseTime = std::time(nullptr);
+
+                CDR::saveCDR(call);
+            }
+
+            if (_operator->getStatus() == OperatorStatus::FREE) {
+
+                if (!this->calls.empty()) {
+                    
+                    this->assignCall(
+                            &this->calls.front(),
+                            _operator
+                    );
+                    this->calls.pop_front();
+
+                    BOOST_LOG_TRIVIAL(info) << "Operator processing callID: " << _operator->getCurrentCall()->callId.id;
+
+                }
+
+            }
+
         }
+
+        std::this_thread::sleep_for(3000ms);
+
     }
+
+}
+
+void CallCenterService::assignCall(Call *call, OperatorMock *operatorMock) {
+
+    call->callStatus = CallStatus::PROCESSING;
+    operatorMock->setBusy(call);
 
 }

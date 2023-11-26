@@ -8,8 +8,11 @@
 enum CallStatus{
     READY,
     PROCESSING,
-    EXPIRED
+    EXPIRED,
+    OVERLOAD,
+    PROCESSED
 };
+
 
 enum OperatorStatus{
     FREE,

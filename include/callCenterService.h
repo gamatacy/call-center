@@ -5,27 +5,31 @@
 #ifndef CALL_CENTER_CALLCENTERSERVICE_H
 #define CALL_CENTER_CALLCENTERSERVICE_H
 
-#include "list"
-#include "thread"
-#include "vector"
+#include <boost/log/trivial.hpp>
+#include "config.h"
 #include "defs.h"
 #include "operatorMock.h"
-#include "config.h"
+#include "cdr.h"
+#include "vector"
+#include "list"
+#include "thread"
+#include "iostream"
 
 
 class CallCenterService {
 private:
     std::list <Call> calls;
-    std::vector <OperatorMock> operatorsList;
+    std::vector <OperatorMock*> operatorsList;
 
-    int hasFreeOperators();
+    void assignCall(Call*, OperatorMock*);
 
 public:
     CallCenterService();
+    ~CallCenterService();
 
     int handleCall(Call&);    
     void handleCallsTimeout();
-
+    void handleOperators();
 };
 
 

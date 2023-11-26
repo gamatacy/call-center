@@ -14,6 +14,7 @@ add_executable(call_center main.cpp
         src/callCenterService.cpp
         include/callCenterService.h
         src/operatorMock.cpp
+        src/cdr.cpp
         include/operatorMock.h
 )
 if(Boost_FOUND)

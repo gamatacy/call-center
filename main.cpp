@@ -5,8 +5,6 @@
 #include "include/httpServer.h"
 
 int main() {
-    std::cout << "Hello, World!\n" << std::endl;
-    std::cout << Config::getInstance()->getQuerySize() << std::endl;
 
     HttpServer *httpServer = new HttpServer();
 
