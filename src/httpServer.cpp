@@ -4,18 +4,22 @@
 
 #include "../include/httpServer.h"
 
-// TODO: config validation and update by timer, number duplicate in queue, normal id generation, pretty writing to file, tests
+// TODO:normal id generation, pretty writing to file, tests
 
 uint64_t HttpServer::id = 0;
 
 void HttpServer::listen() {
     CallCenterService callCenterService;
+
     std::thread timeoutHandler(
     std::bind(&CallCenterService::handleCallsTimeout, &callCenterService)
     );
+
     std::thread operatorsHandler(
     std::bind(&CallCenterService::handleOperators, &callCenterService)
     );
+
+    std::thread configUpdater(Config::updateConfig);
 
     CROW_ROUTE(app, "/")([&callCenterService](const crow::request &req) {
         std::string number;
@@ -30,6 +34,11 @@ void HttpServer::listen() {
         if (number.empty()) {
             BOOST_LOG_TRIVIAL(info) << "Failed to process request: Invalid number";
             return crow::response(400, "Invalid number");
+        }
+
+        if (callCenterService.isNumberPresent(number)) {
+            BOOST_LOG_TRIVIAL(info) << number << " already in queue";
+            return crow::response(400, "This number's already in queue");
         }
 
         BOOST_LOG_TRIVIAL(info) << "New request by " << number << " number";

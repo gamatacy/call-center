@@ -12,6 +12,7 @@
 #include "cdrLoggerImpl.h"
 #include "vector"
 #include "list"
+#include "set"
 #include "thread"
 #include "iostream"
 
@@ -19,6 +20,7 @@
 class CallCenterService {
 private:
     std::list <Call> calls;
+    std::set <size_t> callsHash;
     std::vector <OperatorMock*> operatorsList;
 
     void assignCall(Call*, OperatorMock*);
@@ -27,7 +29,8 @@ public:
     CallCenterService();
     ~CallCenterService();
 
-    int handleCall(Call&);    
+    int handleCall(Call&);
+    bool isNumberPresent(const std::string&) const;
     void handleCallsTimeout();
     void handleOperators();
 };

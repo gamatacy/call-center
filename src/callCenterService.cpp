@@ -1,6 +1,3 @@
-//
-// Created by gamatacy on 24.11.23.
-//
 
 #include "../include/callCenterService.h"
 
@@ -23,8 +20,13 @@ int CallCenterService::handleCall(Call &call) {
     }
 
     this->calls.push_back(call);
+    this->callsHash.insert(std::hash<std::string>{}(call.phoneNumber.number));
     return 1;
 
+}
+
+bool CallCenterService::isNumberPresent(const std::string &number) const {
+    return this->callsHash.count(std::hash<std::string>{}(number)) != 0;
 }
 
 void CallCenterService::handleCallsTimeout() {
@@ -33,13 +35,20 @@ void CallCenterService::handleCallsTimeout() {
 
         for (auto call: this->calls) {
 
-            if (call.rejectTime <= std::time(nullptr)
-                && call.callStatus == CallStatus::EXPIRED) {
+            if (call.rejectTime <= std::time(nullptr)) {
+
                 this->calls.remove(call);
+                this->callsHash.erase(std::hash<std::string>{}(call.phoneNumber.number));
+
+                BOOST_LOG_TRIVIAL(info) << "CallID: " << call.callId.id << " expired ";
+
+                call.callStatus = CallStatus::EXPIRED;
                 CDRLoggerImpl::getInstance()->write(call);
+                break;
             }
 
         }
+
 
         std::this_thread::sleep_for(2000ms);
 
@@ -63,6 +72,8 @@ void CallCenterService::handleOperators() {
 
                 call.callStatus = CallStatus::PROCESSED;
                 call.operatorResponseTime = std::time(nullptr);
+
+                this->callsHash.erase(std::hash<std::string>{}(call.phoneNumber.number));
 
                 CDRLoggerImpl::getInstance()->write(call);
             }

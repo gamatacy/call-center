@@ -1,6 +1,8 @@
 {
-    "query_size" : 3,
+    "query_size" : 300,
     "min_response_time" : 10,
     "max_response_time" : 30,
+    "min_queue_expiration_time" : 10,
+    "max_queue_expiration_time" : 30,
     "journal_filename" : "cdr_jn.txt"
 }

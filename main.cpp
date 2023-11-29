@@ -1,12 +1,18 @@
-#include <iostream>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
+#include <exception>
 #include "include/config.h"
 #include "include/httpServer.h"
 
 int main() {
 
     HttpServer *httpServer = new HttpServer();
+
+    try {
+        Config::getInstance();
+    }
+    catch (std::runtime_error) {
+        BOOST_LOG_TRIVIAL(fatal) << "Failed to read config";
+        return -1;
+    }
 
     httpServer->listen();
 
