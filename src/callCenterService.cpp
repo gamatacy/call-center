@@ -27,7 +27,6 @@ int CallCenterService::handleCall(Call &call) {
 
 }
 
-
 void CallCenterService::handleCallsTimeout() {
 
     while (true) {
@@ -37,7 +36,7 @@ void CallCenterService::handleCallsTimeout() {
             if (call.rejectTime <= std::time(nullptr)
                 && call.callStatus == CallStatus::EXPIRED) {
                 this->calls.remove(call);
-                CDR::saveCDR(call);
+                CDRLoggerImpl::getInstance()->write(call);
             }
 
         }
@@ -65,13 +64,13 @@ void CallCenterService::handleOperators() {
                 call.callStatus = CallStatus::PROCESSED;
                 call.operatorResponseTime = std::time(nullptr);
 
-                CDR::saveCDR(call);
+                CDRLoggerImpl::getInstance()->write(call);
             }
 
             if (_operator->getStatus() == OperatorStatus::FREE) {
 
                 if (!this->calls.empty()) {
-                    
+
                     this->assignCall(
                             &this->calls.front(),
                             _operator

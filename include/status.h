@@ -5,7 +5,15 @@
 #ifndef CALL_CENTER_STATUS_H
 #define CALL_CENTER_STATUS_H
 
-enum CallStatus{
+static const char* callStatusStrings[] = {
+        "READY",
+        "PROCESSING",
+        "EXPIRED",
+        "OVERLOAD",
+        "PROCESSED"
+};
+
+enum CallStatus {
     READY,
     PROCESSING,
     EXPIRED,
@@ -13,8 +21,7 @@ enum CallStatus{
     PROCESSED
 };
 
-
-enum OperatorStatus{
+enum OperatorStatus {
     FREE,
     BUSY
 };

@@ -22,8 +22,9 @@ private:
     std::string journalFilename;
     Config();
 public:
-    Config(const Config& obj) = delete;
-    void operator=(Config const&) = delete;
+    Config(const Config &obj) = delete;
+
+    void operator=(Config const &) = delete;
     uint32_t getQuerySize();
     std::time_t getResponseMin();
     std::time_t getResponseMax();

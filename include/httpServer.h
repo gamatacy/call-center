@@ -8,7 +8,7 @@
 #include <boost/log/trivial.hpp>
 #include "crow_all.h"
 #include "callCenterService.h"
-#include "cdr.h"
+#include "cdrLoggerImpl.h"
 #include "stdint.h"
 #include "string"
 #include "thread"

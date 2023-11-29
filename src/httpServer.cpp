@@ -43,7 +43,7 @@ void HttpServer::listen() {
             case -1:
                 BOOST_LOG_TRIVIAL(info) << number << " rejected because of full queue";
                 call.callStatus = CallStatus::OVERLOAD;
-                CDR::saveCDR(call);
+                CDRLoggerImpl::getInstance()->write(call);
                 return crow::response("Query is full");
             case 1:
                 BOOST_LOG_TRIVIAL(info) << number << " added to queue";

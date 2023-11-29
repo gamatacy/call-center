@@ -9,7 +9,7 @@
 #include "config.h"
 #include "defs.h"
 #include "operatorMock.h"
-#include "cdr.h"
+#include "cdrLoggerImpl.h"
 #include "vector"
 #include "list"
 #include "thread"
