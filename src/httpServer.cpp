@@ -8,11 +8,13 @@ uint64_t HttpServer::id = 0;
 
 void HttpServer::listen() {
     CallCenterService callCenterService;
+
     std::thread timeoutHandler(
-    std::bind(&CallCenterService::handleCallsTimeout, &callCenterService)
+        std::bind(&CallCenterService::handleCallsTimeout, &callCenterService)
     );
+
     std::thread operatorsHandler(
-    std::bind(&CallCenterService::handleOperators, &callCenterService)
+        std::bind(&CallCenterService::handleOperators, &callCenterService)
     );
 
     CROW_ROUTE(app, "/")([&callCenterService](const crow::request &req) {
@@ -41,7 +43,7 @@ void HttpServer::listen() {
 
         switch (callCenterService.handleCall(call)) {
             case -1:
-                BOOST_LOG_TRIVIAL(info) << number << " rejected because of full queue";
+                BOOST_LOG_TRIVIAL(info) << number << " rejected because of full queue (CallID: " << call.callId.id << ")";
                 call.callStatus = CallStatus::OVERLOAD;
                 CDR::saveCDR(call);
                 return crow::response("Query is full");

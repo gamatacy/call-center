@@ -11,16 +11,24 @@ Config *Config::instance = nullptr;
 Config::Config() {
     boost::property_tree::ptree pt;
     boost::property_tree::read_json(CFG_FILE, pt);
+
     this->querySize = pt.get<uint32_t>("query_size");
     this->responseMin = pt.get<uint32_t>("min_response_time");
     this->responseMax = pt.get<uint32_t>("max_response_time");
+    this->minQueueExpirationTime = pt.get<uint32_t>("min_queue_expiration_time");
+    this->maxQueueExpirationTime = pt.get<uint32_t>("max_queue_expiration_time");
     this->journalFilename = pt.get<std::string>("journal_filename");
 
-    BOOST_LOG_TRIVIAL(info) << "query_size: " << this->querySize;
-    BOOST_LOG_TRIVIAL(info) << "min_response_time: " << this->responseMin;
-    BOOST_LOG_TRIVIAL(info) << "max_response_time: " << this->responseMax;
-    BOOST_LOG_TRIVIAL(info) << "journal_filename: " << this->journalFilename;
+}
 
+void Config::updateConfig() {
+    if (instance != nullptr) {
+
+        instance = new Config();
+
+
+    }
+    BOOST_LOG_TRIVIAL(info) << "Config updated";
 }
 
 uint32_t Config::getQuerySize() {
@@ -37,4 +45,12 @@ std::time_t Config::getResponseMax() {
 
 std::string Config::getJournalFilename() {
     return this->journalFilename;
+}
+
+std::time_t Config::getMinQueueExpirationTime() {
+    return this->minQueueExpirationTime;
+}
+
+std::time_t Config::getMaxQueueExpirationTime() {
+    return this->maxQueueExpirationTime;
 }

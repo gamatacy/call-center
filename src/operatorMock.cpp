@@ -23,8 +23,8 @@ void OperatorMock::setStatus(OperatorStatus status) {
 void OperatorMock::setBusy(const Call *call) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> distribution(Config::getInstance()->getResponseMin(),
-                                                    Config::getInstance()->getResponseMax());
+    std::uniform_int_distribution<int> distribution(Config::getInstance()->getMinQueueExpirationTime(),
+                                                    Config::getInstance()->getMaxQueueExpirationTime());
 
     this->call = call;
 

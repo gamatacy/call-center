@@ -34,13 +34,19 @@ void CallCenterService::handleCallsTimeout() {
 
         for (auto call: this->calls) {
 
-            if (call.rejectTime <= std::time(nullptr)
-                && call.callStatus == CallStatus::EXPIRED) {
+            if (call.rejectTime <= std::time(nullptr)) {
+
                 this->calls.remove(call);
+
+                BOOST_LOG_TRIVIAL(info) << "CallID: " << call.callId.id << " expired ";
+
+                call.callStatus = CallStatus::EXPIRED;
                 CDR::saveCDR(call);
+                break;
             }
 
         }
+
 
         std::this_thread::sleep_for(2000ms);
 
@@ -71,7 +77,7 @@ void CallCenterService::handleOperators() {
             if (_operator->getStatus() == OperatorStatus::FREE) {
 
                 if (!this->calls.empty()) {
-                    
+
                     this->assignCall(
                             &this->calls.front(),
                             _operator

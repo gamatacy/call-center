@@ -23,7 +23,7 @@ struct CallId {
         return *this;
     }
 
-    explicit operator uint64_t() {
+    explicit operator uint64_t() const{
         return this->id;
     }
 
@@ -39,7 +39,7 @@ struct PhoneNumber {
         return *this;
     }
 
-    explicit operator std::string() {
+    explicit operator std::string() const{
         return this->number;
     }
 
@@ -55,15 +55,15 @@ struct AbstractTime {
         return *this;
     }
 
-    explicit operator std::time_t() {
+    explicit operator std::time_t() const{
         return this->time;
     }
 
-    int operator<=(const std::time_t &time) {
+    int operator<=(const std::time_t &time) const{
         return this->time <= time;
     }
 
-    int operator==(const AbstractTime &abstractTime) {
+    int operator==(const AbstractTime &abstractTime) const{
         return this->time == abstractTime.time;
     }
 

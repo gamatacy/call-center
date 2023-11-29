@@ -16,8 +16,8 @@
 class HttpServer {
 private:
     crow::SimpleApp app;
-public:
     static uint64_t id;
+public:
 
     HttpServer() {};
 
