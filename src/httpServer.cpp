@@ -4,6 +4,8 @@
 
 #include "../include/httpServer.h"
 
+// TODO: config validation and update by timer, number duplicate in queue, normal id generation, pretty writing to file, tests
+
 uint64_t HttpServer::id = 0;
 
 void HttpServer::listen() {
