@@ -20,6 +20,7 @@
 class Config {
 private:
     static Config *instance;
+    static std::string filename;
     uint32_t querySize;
     uint32_t operatorsCount;
     std::time_t responseMin;
@@ -54,7 +55,11 @@ public:
         return instance;
     }
 
+    static void deleteInstance();
+
     static void updateConfig();
+
+    static void setFilename(const std::string& filename);
 
 };
 

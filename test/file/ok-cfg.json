@@ -1,0 +1,9 @@
+{
+  "query_size" : 1,
+  "operators_count" : 1,
+  "min_response_time" : 1,
+  "max_response_time" : 1,
+  "min_queue_expiration_time" : 1,
+  "max_queue_expiration_time" : 1,
+  "journal_filename" : "1"
+}

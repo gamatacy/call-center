@@ -2,11 +2,12 @@
 #include "include/config.h"
 #include "include/httpServer.h"
 
-int main() {
+int main(int argc, char **argv) {
 
     HttpServer *httpServer = new HttpServer();
 
     try {
+        if (argc > 1) Config::setFilename(argv[1]);
         Config::getInstance();
     }
     catch (std::runtime_error) {

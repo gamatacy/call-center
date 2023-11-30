@@ -5,10 +5,11 @@
 #include "../include/config.h"
 
 Config *Config::instance = nullptr;
+std::string Config::filename = CFG_FILE;
 
 Config::Config() {
     boost::property_tree::ptree pt;
-    boost::property_tree::read_json(CFG_FILE, pt);
+    boost::property_tree::read_json(Config::filename, pt);
 
     this->querySize = pt.get<uint32_t>("query_size");
     this->operatorsCount = pt.get<uint32_t>("operators_count");
@@ -17,6 +18,16 @@ Config::Config() {
     this->minQueueExpirationTime = pt.get<uint32_t>("min_queue_expiration_time");
     this->maxQueueExpirationTime = pt.get<uint32_t>("max_queue_expiration_time");
     this->journalFilename = pt.get<std::string>("journal_filename");
+
+}
+
+void Config::deleteInstance() {
+    instance = nullptr;
+}
+
+void Config::setFilename(const std::string &filename) {
+
+    Config::filename = filename;
 
 }
 
@@ -54,6 +65,14 @@ std::time_t Config::getResponseMin() {
 
 std::time_t Config::getResponseMax() {
     return this->responseMax;
+}
+
+std::time_t Config::getMinQueueExpirationTime() {
+    return this->minQueueExpirationTime;
+}
+
+std::time_t Config::getMaxQueueExpirationTime() {
+    return this->maxQueueExpirationTime;
 }
 
 std::string Config::getJournalFilename() {
