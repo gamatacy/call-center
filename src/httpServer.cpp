@@ -4,7 +4,7 @@
 
 #include "../include/httpServer.h"
 
-// TODO:normal id generation, pretty writing to file, tests
+// TODO: normal id generation, pretty writing to file, tests
 
 uint64_t HttpServer::id = 0;
 
