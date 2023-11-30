@@ -48,17 +48,18 @@ void HttpServer::listen() {
         call.phoneNumber = number;
         call.creationTime = std::time(nullptr);
         call.rejectTime = std::time(nullptr);
+        call.operatorResponseTime = std::time(nullptr);
         call.callStatus = CallStatus::READY;
 
         switch (callCenterService.handleCall(call)) {
             case -1:
-                BOOST_LOG_TRIVIAL(info) << number << " rejected because of full queue";
+                BOOST_LOG_TRIVIAL(info) << "CallID: " << call.callId.id << " rejected because of full queue";
                 call.callStatus = CallStatus::OVERLOAD;
                 CDRLoggerImpl::getInstance()->write(call);
-                return crow::response("Query is full");
+                return crow::response("CallID: " + std::to_string(call.callId.id) + ". Query is full");
             case 1:
-                BOOST_LOG_TRIVIAL(info) << number << " added to queue";
-                return crow::response("You are in queue");
+                BOOST_LOG_TRIVIAL(info) << "CallID: " << call.callId.id << " added to queue";
+                return crow::response("CallID: " + std::to_string(call.callId.id) + ". You are in queue");
         }
 
         return crow::response(number);

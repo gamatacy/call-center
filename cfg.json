@@ -1,5 +1,6 @@
 {
-    "query_size" : 300,
+    "query_size" : 3,
+    "operators_count" : 3,
     "min_response_time" : 10,
     "max_response_time" : 30,
     "min_queue_expiration_time" : 10,

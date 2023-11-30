@@ -5,7 +5,7 @@ using namespace std::chrono_literals;
 
 CallCenterService::CallCenterService() {
 
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < Config::getInstance()->getOperatorsCount(); ++i) {
         this->operatorsList.push_back(new OperatorMock());
     }
 
@@ -20,13 +20,13 @@ int CallCenterService::handleCall(Call &call) {
     }
 
     this->calls.push_back(call);
-    this->callsHash.insert(std::hash<std::string>{}(call.phoneNumber.number));
+    this->callsHash.insert(std::hash < std::string > {}(call.phoneNumber.number));
     return 1;
 
 }
 
 bool CallCenterService::isNumberPresent(const std::string &number) const {
-    return this->callsHash.count(std::hash<std::string>{}(number)) != 0;
+    return this->callsHash.count(std::hash < std::string > {}(number)) != 0;
 }
 
 void CallCenterService::handleCallsTimeout() {
@@ -38,11 +38,12 @@ void CallCenterService::handleCallsTimeout() {
             if (call.rejectTime <= std::time(nullptr)) {
 
                 this->calls.remove(call);
-                this->callsHash.erase(std::hash<std::string>{}(call.phoneNumber.number));
+                this->callsHash.erase(std::hash < std::string > {}(call.phoneNumber.number));
 
                 BOOST_LOG_TRIVIAL(info) << "CallID: " << call.callId.id << " expired ";
 
                 call.callStatus = CallStatus::EXPIRED;
+                call.operatorResponseTime = std::time(nullptr);
                 CDRLoggerImpl::getInstance()->write(call);
                 break;
             }
@@ -71,9 +72,8 @@ void CallCenterService::handleOperators() {
                 Call call = *_operator->getCurrentCall();
 
                 call.callStatus = CallStatus::PROCESSED;
-                call.operatorResponseTime = std::time(nullptr);
 
-                this->callsHash.erase(std::hash<std::string>{}(call.phoneNumber.number));
+                this->callsHash.erase(std::hash < std::string > {}(call.phoneNumber.number));
 
                 CDRLoggerImpl::getInstance()->write(call);
             }

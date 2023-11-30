@@ -21,6 +21,7 @@ class Config {
 private:
     static Config *instance;
     uint32_t querySize;
+    uint32_t operatorsCount;
     std::time_t responseMin;
     std::time_t responseMax;
     std::time_t minQueueExpirationTime;
@@ -35,6 +36,8 @@ public:
     void operator=(Config const &) = delete;
 
     uint32_t getQuerySize();
+
+    uint32_t getOperatorsCount();
 
     std::time_t getResponseMin();
 
