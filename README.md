@@ -1,7 +1,16 @@
 ## How to build
 
+
 ```
-sudo pip install canon
-make build
-./call-center // executable
+make build_toolchain
+cmake--build .
+```
+## How to run application and tests
+
+```
+./call-center <config_filename> <port>
+```
+
+```
+./tests
 ```
