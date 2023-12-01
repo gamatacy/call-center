@@ -8,7 +8,7 @@
 
 uint64_t HttpServer::id = 0;
 
-void HttpServer::listen() {
+void HttpServer::listen(const int& port) {
     CallCenterService callCenterService;
 
     std::thread timeoutHandler(
@@ -66,5 +66,5 @@ void HttpServer::listen() {
     });
 
 
-    app.port(29501).multithreaded().run();
+    app.port(port).multithreaded().run();
 }
