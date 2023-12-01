@@ -9,3 +9,5 @@ Makefile
 .idea
 cmake-build-debug
 .vscode
+tests
+cdr_jn.txt
