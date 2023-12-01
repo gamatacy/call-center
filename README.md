@@ -1,5 +1,4 @@
-## How to build
-
+## How to build (Conan required)
 
 ```
 make build_toolchain
